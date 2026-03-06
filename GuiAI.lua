@@ -83,7 +83,7 @@ for i = 1,20 do
 	button.MouseButton1Click:Connect(function()
 
 		if i == 1 then
-			loadstring(game:HttpGet("https://gist.githubusercontent.com/Tincoi/caf7030e7b050db0595d6fb958e4dbb0/raw/0b3e7e96ad60baa0aa3527da7c2c3936cf7d0318/TphumanAI"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
 
 		elseif i == 2 then
 			-- SCRIPT 2
