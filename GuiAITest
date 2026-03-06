@@ -1,34 +1,71 @@
+-- AUTO LOAD WHEN SERVER HOP
+local scriptLink = "LINK_MENU_CUA_BAN"
+
+if queue_on_teleport then
+    queue_on_teleport('loadstring(game:HttpGet("'..scriptLink..'"))()')
+end
+
+repeat task.wait() until game:IsLoaded()
+
 local player = game.Players.LocalPlayer
 local UIS = game:GetService("UserInputService")
 
--- CHỖ ĐỔI TÊN SCRIPT
+-- ĐỔI TÊN NÚT
 local scriptNames = {
-    "TPHuman",
-    "AimBot",
-    "Scrppt 3",
-    "Script 4",
-    "Script 5",
-    "Script 6",
-    "Script 7",
-    "Script 8",
-    "Script 9",
-    "Script 10",
-    "Script 11",
-    "Script 12",
-    "Script 13",
-    "Script 14",
-    "Script 15",
-    "Script 16",
-    "Script 17",
-    "Script 18",
-    "Script 19",
-    "Script 20"
+"Aimbot",
+"TP Human",
+"Script 3",
+"Script 4",
+"Script 5",
+"Script 6",
+"Script 7",
+"Script 8",
+"Script 9",
+"Script 10",
+"Script 11",
+"Script 12",
+"Script 13",
+"Script 14",
+"Script 15",
+"Script 16",
+"Script 17",
+"Script 18",
+"Script 19",
+"Script 20"
+}
+
+-- CHỈ CẦN DÁN LINK SCRIPT
+local scripts = {
+
+"https://raw.githubusercontent.com/Tincoi/Script-roblox/main/aimbotAI.lua",
+
+"https://raw.githubusercontent.com/Tincoi/Script-roblox/main/TphumanAI.lua",
+
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+""
+
 }
 
 local gui = Instance.new("ScreenGui")
 gui.Parent = player:WaitForChild("PlayerGui")
 
--- Nút Menu
+-- Nút mở menu
 local toggle = Instance.new("TextButton")
 toggle.Parent = gui
 toggle.Size = UDim2.new(0,60,0,30)
@@ -40,7 +77,7 @@ toggle.Active = true
 toggle.Draggable = true
 Instance.new("UICorner",toggle).CornerRadius = UDim.new(0,8)
 
--- Frame chính
+-- Frame menu
 local frame = Instance.new("Frame")
 frame.Parent = gui
 frame.Size = UDim2.new(0,520,0,210)
@@ -59,6 +96,7 @@ close.Position = UDim2.new(1,-35,0,5)
 close.Text = "X"
 close.BackgroundColor3 = Color3.fromRGB(170,0,0)
 close.TextColor3 = Color3.new(1,1,1)
+
 Instance.new("UICorner",close).CornerRadius = UDim.new(0,6)
 
 close.MouseButton1Click:Connect(function()
@@ -76,7 +114,7 @@ UIS.InputBegan:Connect(function(input,gp)
 	end
 end)
 
--- Tạo 20 nút
+-- TẠO 20 NÚT
 for i = 1,20 do
 
 	local button = Instance.new("TextButton")
@@ -88,7 +126,6 @@ for i = 1,20 do
 
 	button.Position = UDim2.new(0,10 + col*100,0,40 + row*40)
 
-	-- LẤY TÊN TỪ DANH SÁCH
 	button.Text = scriptNames[i] or ("Script "..i)
 
 	button.BackgroundColor3 = Color3.fromRGB(70,70,70)
@@ -98,66 +135,12 @@ for i = 1,20 do
 
 	button.MouseButton1Click:Connect(function()
 
-	if i == 1 then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
+		local link = scripts[i]
 
-	elseif i == 2 then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI"))()
+		if link ~= "" then
+			loadstring(game:HttpGet(link))()
+		end
 
-	elseif i == 3 then
-		-- SCRIPT 3
+	end)
 
-	elseif i == 4 then
-		-- SCRIPT 4
-
-	elseif i == 5 then
-		-- SCRIPT 5
-
-	elseif i == 6 then
-		-- SCRIPT 6
-
-	elseif i == 7 then
-		-- SCRIPT 7
-
-	elseif i == 8 then
-		-- SCRIPT 8
-
-	elseif i == 9 then
-		-- SCRIPT 9
-
-	elseif i == 10 then
-		-- SCRIPT 10
-
-	elseif i == 11 then
-		-- SCRIPT 11
-
-	elseif i == 12 then
-		-- SCRIPT 12
-
-	elseif i == 13 then
-		-- SCRIPT 13
-
-	elseif i == 14 then
-		-- SCRIPT 14
-
-	elseif i == 15 then
-		-- SCRIPT 15
-
-	elseif i == 16 then
-		-- SCRIPT 16
-
-	elseif i == 17 then
-		-- SCRIPT 17
-
-	elseif i == 18 then
-		-- SCRIPT 18
-
-	elseif i == 19 then
-		-- SCRIPT 19
-
-	elseif i == 20 then
-		-- SCRIPT 20
-
-	end
-
-end)
+end
