@@ -1,0 +1,149 @@
+-- AUTO LOAD WHEN SERVER HOP
+local scriptLink = "LINK_SCRIPT_CUA_BAN"
+
+if queue_on_teleport then
+    queue_on_teleport('loadstring(game:HttpGet("'..scriptLink..'"))()')
+end
+
+repeat task.wait() until game:IsLoaded()
+
+local player = game.Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+
+local gui = Instance.new("ScreenGui")
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- Nút Menu
+local toggle = Instance.new("TextButton")
+toggle.Parent = gui
+toggle.Size = UDim2.new(0,60,0,30)
+toggle.Position = UDim2.new(0,10,0,200)
+toggle.Text = "Menu"
+toggle.BackgroundColor3 = Color3.fromRGB(40,40,40)
+toggle.TextColor3 = Color3.new(1,1,1)
+toggle.Active = true
+toggle.Draggable = true
+Instance.new("UICorner",toggle).CornerRadius = UDim.new(0,8)
+
+-- Frame chính
+local frame = Instance.new("Frame")
+frame.Parent = gui
+frame.Size = UDim2.new(0,520,0,210)
+frame.Position = UDim2.new(0.5,-260,0.5,-105)
+frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+frame.Visible = false
+frame.Active = true
+frame.Draggable = true
+Instance.new("UICorner",frame).CornerRadius = UDim.new(0,12)
+
+-- Nút đóng
+local close = Instance.new("TextButton")
+close.Parent = frame
+close.Size = UDim2.new(0,30,0,30)
+close.Position = UDim2.new(1,-35,0,5)
+close.Text = "X"
+close.BackgroundColor3 = Color3.fromRGB(170,0,0)
+close.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner",close).CornerRadius = UDim.new(0,6)
+
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+-- Nút Menu bật/tắt
+toggle.MouseButton1Click:Connect(function()
+	frame.Visible = not frame.Visible
+end)
+
+-- Keybind K
+UIS.InputBegan:Connect(function(input,gp)
+	if gp then return end
+	if input.KeyCode == Enum.KeyCode.K then
+		frame.Visible = not frame.Visible
+	end
+end)
+
+-- Tạo 20 nút
+for i = 1,20 do
+
+	local button = Instance.new("TextButton")
+	button.Parent = frame
+	button.Size = UDim2.new(0,95,0,35)
+
+	local col = (i-1) % 5
+	local row = math.floor((i-1)/5)
+
+	button.Position = UDim2.new(0,10 + col*100,0,40 + row*40)
+	button.Text = "Script "..i
+	button.BackgroundColor3 = Color3.fromRGB(70,70,70)
+	button.TextColor3 = Color3.new(1,1,1)
+
+	Instance.new("UICorner",button).CornerRadius = UDim.new(0,6)
+
+	button.MouseButton1Click:Connect(function()
+
+		if i == 1 then
+			loadstring(game:HttpGet("https://gist.githubusercontent.com/Tincoi/caf7030e7b050db0595d6fb958e4dbb0/raw/0b3e7e96ad60baa0aa3527da7c2c3936cf7d0318/TphumanAI"))()
+
+		elseif i == 2 then
+			-- SCRIPT 2
+
+		elseif i == 3 then
+			-- SCRIPT 3
+
+		elseif i == 4 then
+			-- SCRIPT 4
+
+		elseif i == 5 then
+			-- SCRIPT 5
+
+		elseif i == 6 then
+			-- SCRIPT 6
+
+		elseif i == 7 then
+			-- SCRIPT 7
+
+		elseif i == 8 then
+			-- SCRIPT 8
+
+		elseif i == 9 then
+			-- SCRIPT 9
+
+		elseif i == 10 then
+			-- SCRIPT 10
+
+		elseif i == 11 then
+			-- SCRIPT 11
+
+		elseif i == 12 then
+			-- SCRIPT 12
+
+		elseif i == 13 then
+			-- SCRIPT 13
+
+		elseif i == 14 then
+			-- SCRIPT 14
+
+		elseif i == 15 then
+			-- SCRIPT 15
+
+		elseif i == 16 then
+			-- SCRIPT 16
+
+		elseif i == 17 then
+			-- SCRIPT 17
+
+		elseif i == 18 then
+			-- SCRIPT 18
+
+		elseif i == 19 then
+			-- SCRIPT 19
+
+		elseif i == 20 then
+			-- SCRIPT 20
+
+		end
+
+	end)
+
+end
