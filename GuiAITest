@@ -2,7 +2,7 @@
 local scriptLink = "https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/GuiAITest"
 
 if queue_on_teleport then
-    queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/GuiAITest"))()')
+    queue_on_teleport('loadstring(game:HttpGet("'https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/GuiAITest'"))()')
 end
 
 repeat task.wait() until game:IsLoaded()
