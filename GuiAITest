@@ -1,5 +1,5 @@
 -- AUTO LOAD WHEN SERVER HOP
-local scriptLink = "LINK_MENU_CUA_BAN"
+local scriptLink = "https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/GuiAITest"
 
 if queue_on_teleport then
     queue_on_teleport('loadstring(game:HttpGet("'..scriptLink..'"))()')
@@ -14,24 +14,24 @@ local UIS = game:GetService("UserInputService")
 local scriptNames = {
 "Aimbot",
 "TP Human",
-"Script 3",
-"Script 4",
-"Script 5",
-"Script 6",
-"Script 7",
-"Script 8",
-"Script 9",
-"Script 10",
-"Script 11",
-"Script 12",
-"Script 13",
-"Script 14",
-"Script 15",
-"Script 16",
-"Script 17",
-"Script 18",
-"Script 19",
-"Script 20"
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+".",
+"."
 }
 
 -- CHỈ CẦN DÁN LINK SCRIPT
