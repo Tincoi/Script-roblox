@@ -12,8 +12,8 @@ local UIS = game:GetService("UserInputService")
 
 -- CHỖ ĐỔI TÊN SCRIPT
 local scriptNames = {
-    "Script 1",
-    "Script 2",
+    "TPHuman",
+    "AimBot",
     "Script 3",
     "Script 4",
     "Script 5",
@@ -108,10 +108,10 @@ for i = 1,20 do
 	button.MouseButton1Click:Connect(function()
 
 	if i == 1 then
-		-- SCRIPT 1
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
 
 	elseif i == 2 then
-		-- SCRIPT 2
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI"))()
 
 	elseif i == 3 then
 		-- SCRIPT 3
