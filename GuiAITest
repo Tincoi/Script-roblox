@@ -38,7 +38,7 @@ local scriptNames = {
 local scripts = {
 
 {
-"https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI.lua",
+"https://raw.githubusercontent.com/Tincoi/Script-roblox/main/aimbotAI.lua",
 "https://raw.githubusercontent.com/Tincoi/Script-roblox/main/TphumanAI.lua"
 },
 
