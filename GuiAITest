@@ -62,8 +62,14 @@ local scripts = {
 
 }
 
+-- XÓA MENU CŨ NẾU CÓ
+if game.CoreGui:FindFirstChild("TincoiMenu") then
+    game.CoreGui.TincoiMenu:Destroy()
+end
+
 local gui = Instance.new("ScreenGui")
-gui.Parent = player:WaitForChild("PlayerGui")
+gui.Name = "TincoiMenu"
+gui.Parent = game.CoreGui
 
 -- Nút mở menu
 local toggle = Instance.new("TextButton")
