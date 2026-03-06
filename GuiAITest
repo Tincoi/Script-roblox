@@ -5,7 +5,7 @@ local UIS = game:GetService("UserInputService")
 local scriptNames = {
     "TPHuman",
     "AimBot",
-    "Script 3",
+    "Scrppt 3",
     "Script 4",
     "Script 5",
     "Script 6",
