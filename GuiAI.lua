@@ -86,61 +86,61 @@ for i = 1,20 do
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
 
 		elseif i == 2 then
-			-- SCRIPT 2
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI"))()
 
 		elseif i == 3 then
-			-- SCRIPT 3
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 4 then
-			-- SCRIPT 4
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 5 then
-			-- SCRIPT 5
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 6 then
-			-- SCRIPT 6
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 7 then
-			-- SCRIPT 7
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 8 then
-			-- SCRIPT 8
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 9 then
-			-- SCRIPT 9
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 10 then
-			-- SCRIPT 10
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 11 then
-			-- SCRIPT 11
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 12 then
-			-- SCRIPT 12
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 13 then
-			-- SCRIPT 13
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 14 then
-			-- SCRIPT 14
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 15 then
-			-- SCRIPT 15
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 16 then
-			-- SCRIPT 16
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 17 then
-			-- SCRIPT 17
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 18 then
-			-- SCRIPT 18
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 19 then
-			-- SCRIPT 19
+			loadstring(game:HttpGet(""))()
 
 		elseif i == 20 then
-			-- SCRIPT 20
+			loadstring(game:HttpGet(""))()
 
 		end
 
