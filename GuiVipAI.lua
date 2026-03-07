@@ -1,6 +1,6 @@
 -- AUTO LOAD SERVER HOP
 if queue_on_teleport then
-queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/GuiVipAI"))()]])
+queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/GuiVipAI.lua"))()]])
 end
 
 -- ANTI DUPLICATE
