@@ -1,17 +1,20 @@
--- chống load nhiều menu
+-- AUTO LOAD SERVER HOP
+if queue_on_teleport then
+queue_on_teleport([[loadstring(game:HttpGet("PUT_SCRIPT_LINK_HERE"))()]])
+end
+
+-- ANTI DUPLICATE
 if game.CoreGui:FindFirstChild("GuiVipTinkoj") then
-    game.CoreGui.GuiVipTinkoj:Destroy()
+game.CoreGui.GuiVipTinkoj:Destroy()
 end
 
 local UIS = game:GetService("UserInputService")
 
-local gui = Instance.new("ScreenGui")
+local gui = Instance.new("ScreenGui",game.CoreGui)
 gui.Name = "GuiVipTinkoj"
-gui.Parent = game.CoreGui
 
--- NÚT MỞ MENU
-local openBtn = Instance.new("TextButton")
-openBtn.Parent = gui
+-- OPEN BUTTON
+local openBtn = Instance.new("TextButton",gui)
 openBtn.Size = UDim2.new(0,100,0,40)
 openBtn.Position = UDim2.new(0,50,0,200)
 openBtn.Text = "OPEN"
@@ -20,26 +23,22 @@ openBtn.TextColor3 = Color3.new(1,1,1)
 Instance.new("UICorner",openBtn)
 
 -- MENU
-local frame = Instance.new("Frame")
-frame.Parent = gui
+local frame = Instance.new("Frame",gui)
 frame.Size = UDim2.new(0,420,0,260)
 frame.Position = UDim2.new(0.5,-210,0.5,-130)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
-frame.Visible = true
 Instance.new("UICorner",frame)
 
 -- TITLE
-local title = Instance.new("TextLabel")
-title.Parent = frame
+local title = Instance.new("TextLabel",frame)
 title.Size = UDim2.new(1,0,0,30)
 title.BackgroundTransparency = 1
 title.Text = "GuiVip by Tinkoj"
 title.TextColor3 = Color3.new(1,1,1)
 title.TextScaled = true
 
--- NÚT X (ẨN MENU)
-local closeBtn = Instance.new("TextButton")
-closeBtn.Parent = frame
+-- X BUTTON
+local closeBtn = Instance.new("TextButton",frame)
 closeBtn.Size = UDim2.new(0,25,0,25)
 closeBtn.Position = UDim2.new(1,-30,0,5)
 closeBtn.Text = "X"
@@ -47,9 +46,8 @@ closeBtn.BackgroundColor3 = Color3.fromRGB(170,0,0)
 closeBtn.TextColor3 = Color3.new(1,1,1)
 Instance.new("UICorner",closeBtn)
 
--- NÚT OUT
-local outBtn = Instance.new("TextButton")
-outBtn.Parent = frame
+-- OUT BUTTON
+local outBtn = Instance.new("TextButton",frame)
 outBtn.Size = UDim2.new(0,50,0,25)
 outBtn.Position = UDim2.new(1,-55,1,-30)
 outBtn.Text = "OUT"
@@ -57,50 +55,42 @@ outBtn.BackgroundColor3 = Color3.fromRGB(120,0,0)
 outBtn.TextColor3 = Color3.new(1,1,1)
 Instance.new("UICorner",outBtn)
 
--- KHUNG CHỨA NÚT
-local container = Instance.new("Frame")
-container.Parent = frame
+-- BUTTON CONTAINER
+local container = Instance.new("Frame",frame)
 container.Size = UDim2.new(1,-10,1,-60)
 container.Position = UDim2.new(0,5,0,35)
 container.BackgroundTransparency = 1
 
-local grid = Instance.new("UIGridLayout")
-grid.Parent = container
+local grid = Instance.new("UIGridLayout",container)
 grid.CellSize = UDim2.new(0,95,0,35)
 grid.CellPadding = UDim2.new(0,5,0,5)
 
--- FUNCTION TẠO NÚT
+-- CREATE BUTTON
 local function makeBtn(name)
 
-    local btn = Instance.new("TextButton")
-    btn.Parent = container
-    btn.Text = name
-    btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
-    btn.TextColor3 = Color3.new(1,1,1)
+local b = Instance.new("TextButton",container)
+b.Text = name
+b.BackgroundColor3 = Color3.fromRGB(45,45,45)
+b.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner",b)
 
-    Instance.new("UICorner",btn)
-
-    return btn
+return b
 end
 
--------------------------
--- 20 NÚT
--------------------------
-
-local b1 = makeBtn("PVPKing")
+-- 20 BUTTONS
+local b1 = makeBtn("Button 1")
 b1.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI.lua"))()
+loadstring(game:HttpGet(""))()
 end)
 
-local b2 = makeBtn("AimBotAI")
+local b2 = makeBtn("Button 2")
 b2.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI.lua"))()
+loadstring(game:HttpGet(""))()
 end)
 
-local b3 = makeBtn("TphumanAI")
+local b3 = makeBtn("Button 3")
 b3.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
+loadstring(game:HttpGet(""))()
 end)
 
 local b4 = makeBtn("Button 4")
@@ -188,83 +178,62 @@ b20.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
--------------------------
-
--- ẨN MENU (X)
-closeBtn.MouseButton1Click:Connect(function()
-frame.Visible = false
-end)
-
--- NÚT OPEN (TOGGLE)
-openBtn.MouseButton1Click:Connect(function()
+-- TOGGLE FUNCTION
+local function toggle()
 frame.Visible = not frame.Visible
+end
+
+openBtn.MouseButton1Click:Connect(toggle)
+closeBtn.MouseButton1Click:Connect(function()
+frame.Visible=false
 end)
 
--- OUT GUI
 outBtn.MouseButton1Click:Connect(function()
 gui:Destroy()
 end)
 
--------------------------
--- DRAG FUNCTION (PC + MOBILE)
--------------------------
-
-local function dragify(Frame)
-
-local dragToggle = nil
-local dragInput = nil
-local dragStart = nil
-local startPos = nil
-
-local function update(input)
-
-local delta = input.Position - dragStart
-
-Frame.Position = UDim2.new(
-startPos.X.Scale,
-startPos.X.Offset + delta.X,
-startPos.Y.Scale,
-startPos.Y.Offset + delta.Y
-)
-
+-- KEYBIND K
+UIS.InputBegan:Connect(function(i,gp)
+if gp then return end
+if i.KeyCode == Enum.KeyCode.K then
+toggle()
 end
-
-Frame.InputBegan:Connect(function(input)
-
-if input.UserInputType == Enum.UserInputType.MouseButton1
-or input.UserInputType == Enum.UserInputType.Touch then
-
-dragToggle = true
-dragStart = input.Position
-startPos = Frame.Position
-
-input.Changed:Connect(function()
-
-if input.UserInputState == Enum.UserInputState.End then
-dragToggle = false
-end
-
 end)
 
+-- DRAG FUNCTION
+local function dragify(obj)
+
+local drag=false
+local dragInput,start,startPos
+
+local function update(i)
+local delta=i.Position-start
+obj.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
 end
 
+obj.InputBegan:Connect(function(i)
+if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then
+drag=true
+start=i.Position
+startPos=obj.Position
+i.Changed:Connect(function()
+if i.UserInputState==Enum.UserInputState.End then
+drag=false
+end
+end)
+end
 end)
 
-Frame.InputChanged:Connect(function(input)
-
-if input.UserInputType == Enum.UserInputType.MouseMovement
-or input.UserInputType == Enum.UserInputType.Touch then
-dragInput = input
+obj.InputChanged:Connect(function(i)
+if i.UserInputType==Enum.UserInputType.MouseMovement or i.UserInputType==Enum.UserInputType.Touch then
+dragInput=i
 end
-
 end)
 
-UIS.InputChanged:Connect(function(input)
-
-if input == dragInput and dragToggle then
-update(input)
+UIS.InputChanged:Connect(function(i)
+if i==dragInput and drag then
+update(i)
 end
-
 end)
 
 end
