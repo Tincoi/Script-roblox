@@ -140,9 +140,9 @@ b11.MouseButton1Click:Connect(function()
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/EspHPAI.lua"))()
 end)
 
-local b12 = makeBtn(".")
+local b12 = makeBtn("TpBang")
 b12.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://gist.githubusercontent.com/Tincoi/43e83cb6e2e4e8e97aa4bc883eeb4782/raw/97873fe1cb2aca2289eb3c45e999cf64d9a08e4c/tpbang"))()
 end)
 
 local b13 = makeBtn(".")
