@@ -118,7 +118,7 @@ b7.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet("https://gist.githubusercontent.com/Tincoi/03dce6fb43b76c0f11388ed82b6bfb84/raw/e529442c9bd9dc8f25ea19fe0f46d16ec4150299/flyjump"))()
 end)
 
-local b8 = makeBtn(".")
+local b8 = makeBtn("Esp")
 b8.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
@@ -245,3 +245,16 @@ end
 
 dragify(frame)
 dragify(openBtn)
+local UIS = game:GetService("UserInputService")
+
+UIS.InputBegan:Connect(function(input, gameProcessed)
+
+if gameProcessed then return end
+
+if input.KeyCode == Enum.KeyCode.K then
+
+frame.Visible = not frame.Visible
+
+end
+
+end)
