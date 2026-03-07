@@ -1,0 +1,273 @@
+-- chống load nhiều menu
+if game.CoreGui:FindFirstChild("GuiVipTinkoj") then
+    game.CoreGui.GuiVipTinkoj:Destroy()
+end
+
+local UIS = game:GetService("UserInputService")
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "GuiVipTinkoj"
+gui.Parent = game.CoreGui
+
+-- NÚT MỞ MENU
+local openBtn = Instance.new("TextButton")
+openBtn.Parent = gui
+openBtn.Size = UDim2.new(0,100,0,40)
+openBtn.Position = UDim2.new(0,50,0,200)
+openBtn.Text = "OPEN"
+openBtn.BackgroundColor3 = Color3.fromRGB(35,35,35)
+openBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner",openBtn)
+
+-- MENU
+local frame = Instance.new("Frame")
+frame.Parent = gui
+frame.Size = UDim2.new(0,420,0,260)
+frame.Position = UDim2.new(0.5,-210,0.5,-130)
+frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+frame.Visible = true
+Instance.new("UICorner",frame)
+
+-- TITLE
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Size = UDim2.new(1,0,0,30)
+title.BackgroundTransparency = 1
+title.Text = "GuiVip by Tinkoj"
+title.TextColor3 = Color3.new(1,1,1)
+title.TextScaled = true
+
+-- NÚT X (ẨN MENU)
+local closeBtn = Instance.new("TextButton")
+closeBtn.Parent = frame
+closeBtn.Size = UDim2.new(0,25,0,25)
+closeBtn.Position = UDim2.new(1,-30,0,5)
+closeBtn.Text = "X"
+closeBtn.BackgroundColor3 = Color3.fromRGB(170,0,0)
+closeBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner",closeBtn)
+
+-- NÚT OUT
+local outBtn = Instance.new("TextButton")
+outBtn.Parent = frame
+outBtn.Size = UDim2.new(0,50,0,25)
+outBtn.Position = UDim2.new(1,-55,1,-30)
+outBtn.Text = "OUT"
+outBtn.BackgroundColor3 = Color3.fromRGB(120,0,0)
+outBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner",outBtn)
+
+-- KHUNG CHỨA NÚT
+local container = Instance.new("Frame")
+container.Parent = frame
+container.Size = UDim2.new(1,-10,1,-60)
+container.Position = UDim2.new(0,5,0,35)
+container.BackgroundTransparency = 1
+
+local grid = Instance.new("UIGridLayout")
+grid.Parent = container
+grid.CellSize = UDim2.new(0,95,0,35)
+grid.CellPadding = UDim2.new(0,5,0,5)
+
+-- FUNCTION TẠO NÚT
+local function makeBtn(name)
+
+    local btn = Instance.new("TextButton")
+    btn.Parent = container
+    btn.Text = name
+    btn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+    btn.TextColor3 = Color3.new(1,1,1)
+
+    Instance.new("UICorner",btn)
+
+    return btn
+end
+
+-------------------------
+-- 20 NÚT
+-------------------------
+
+local b1 = makeBtn("PVPKing")
+b1.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI.lua"))()
+end)
+
+local b2 = makeBtn("AimBotAI")
+b2.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI.lua"))()
+end)
+
+local b3 = makeBtn("TphumanAI")
+b3.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
+end)
+
+local b4 = makeBtn("Button 4")
+b4.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b5 = makeBtn("Button 5")
+b5.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b6 = makeBtn("Button 6")
+b6.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b7 = makeBtn("Button 7")
+b7.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b8 = makeBtn("Button 8")
+b8.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b9 = makeBtn("Button 9")
+b9.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b10 = makeBtn("Button 10")
+b10.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b11 = makeBtn("Button 11")
+b11.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b12 = makeBtn("Button 12")
+b12.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b13 = makeBtn("Button 13")
+b13.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b14 = makeBtn("Button 14")
+b14.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b15 = makeBtn("Button 15")
+b15.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b16 = makeBtn("Button 16")
+b16.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b17 = makeBtn("Button 17")
+b17.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b18 = makeBtn("Button 18")
+b18.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b19 = makeBtn("Button 19")
+b19.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+local b20 = makeBtn("Button 20")
+b20.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet(""))()
+end)
+
+-------------------------
+
+-- ẨN MENU (X)
+closeBtn.MouseButton1Click:Connect(function()
+frame.Visible = false
+end)
+
+-- NÚT OPEN (TOGGLE)
+openBtn.MouseButton1Click:Connect(function()
+frame.Visible = not frame.Visible
+end)
+
+-- OUT GUI
+outBtn.MouseButton1Click:Connect(function()
+gui:Destroy()
+end)
+
+-------------------------
+-- DRAG FUNCTION (PC + MOBILE)
+-------------------------
+
+local function dragify(Frame)
+
+local dragToggle = nil
+local dragInput = nil
+local dragStart = nil
+local startPos = nil
+
+local function update(input)
+
+local delta = input.Position - dragStart
+
+Frame.Position = UDim2.new(
+startPos.X.Scale,
+startPos.X.Offset + delta.X,
+startPos.Y.Scale,
+startPos.Y.Offset + delta.Y
+)
+
+end
+
+Frame.InputBegan:Connect(function(input)
+
+if input.UserInputType == Enum.UserInputType.MouseButton1
+or input.UserInputType == Enum.UserInputType.Touch then
+
+dragToggle = true
+dragStart = input.Position
+startPos = Frame.Position
+
+input.Changed:Connect(function()
+
+if input.UserInputState == Enum.UserInputState.End then
+dragToggle = false
+end
+
+end)
+
+end
+
+end)
+
+Frame.InputChanged:Connect(function(input)
+
+if input.UserInputType == Enum.UserInputType.MouseMovement
+or input.UserInputType == Enum.UserInputType.Touch then
+dragInput = input
+end
+
+end)
+
+UIS.InputChanged:Connect(function(input)
+
+if input == dragInput and dragToggle then
+update(input)
+end
+
+end)
+
+end
+
+dragify(frame)
+dragify(openBtn)
