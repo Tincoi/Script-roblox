@@ -1,6 +1,6 @@
 -- AUTO LOAD SERVER HOP
 if queue_on_teleport then
-queue_on_teleport([[loadstring(game:HttpGet("PUT_SCRIPT_LINK_HERE"))()]])
+queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/GuiVipAI"))()]])
 end
 
 -- ANTI DUPLICATE
@@ -78,102 +78,103 @@ return b
 end
 
 -- 20 BUTTONS
-local b1 = makeBtn("Button 1")
+local b1 = makeBtn("PVPKing")
 b1.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI.lua"))()
 end)
 
-local b2 = makeBtn("Button 2")
+local b2 = makeBtn("TphumanAI")
 b2.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/TphumanAI.lua"))()
 end)
 
-local b3 = makeBtn("Button 3")
+local b3 = makeBtn("AimbotAI")
 b3.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/aimbotAI.lua"))()
 end)
 
-local b4 = makeBtn("Button 4")
+local b4 = makeBtn(".")
 b4.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b5 = makeBtn("Button 5")
+local b5 = makeBtn(".")
 b5.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b6 = makeBtn("Button 6")
+local b6 = makeBtn(".")
 b6.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b7 = makeBtn("Button 7")
+local b7 = makeBtn(".")
 b7.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b8 = makeBtn("Button 8")
+local b8 = makeBtn(".")
 b8.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b9 = makeBtn("Button 9")
+local b9 = makeBtn(".")
 b9.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b10 = makeBtn("Button 10")
+local b10 = makeBtn(".")
 b10.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b11 = makeBtn("Button 11")
+local b11 = makeBtn("")
 b11.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b12 = makeBtn("Button 12")
+local b12 = makeBtn(".")
 b12.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b13 = makeBtn("Button 13")
+local b13 = makeBtn(".")
 b13.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b14 = makeBtn("Button 14")
+local b14 = makeBtn(".")
 b14.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b15 = makeBtn("Button 15")
+local b15 = makeBtn(".")
 b15.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b16 = makeBtn("Button 16")
+local b16 = makeBtn(".")
 b16.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b17 = makeBtn("Button 17")
+local b17 = makeBtn(".")
 b17.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b18 = makeBtn("Button 18")
+local b18 = makeBtn(".")
 b18.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b19 = makeBtn("Button 19")
+local b19 = makeBtn(".")
 b19.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b20 = makeBtn("Button 20")
+local b20 = makeBtn(".")
 b20.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
