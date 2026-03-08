@@ -155,7 +155,7 @@ UserInputService.InputBegan:Connect(function(input,gp)
 
 	if gp then return end
 
-	if input.KeyCode == Enum.KeyCode.T then
+	if input.KeyCode == Enum.KeyCode.F then
 
 		if selectedPlayer
 		and selectedPlayer.Character
