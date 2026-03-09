@@ -173,9 +173,9 @@ b18.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b19 = makeBtn(".")
+local b19 = makeBtn("Testscript")
 b19.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/Testscript.lua"))()
 end)
 
 local b20 = makeBtn("REJOIN")
