@@ -1,226 +1,215 @@
---// Lightweight ESP with GUI
-
-if not game:IsLoaded() then game.Loaded:Wait() end
+--[[ 
+    GEMINI ESP V6 (USERNAME EDITION)
+    - Tên hiển thị: Chuyển sang định dạng @Username.
+    - Hiệu suất: Thanh máu chỉ dành cho Player, tối ưu cực nhẹ.
+    - Mặc định: Bật tất cả trừ NPC.
+    - Màu sắc: Địch (Trắng), Đồng đội (Xanh Cyan), NPC (Vàng).
+]]
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local LocalPlayer = Players.LocalPlayer
-local Camera = workspace.CurrentCamera
+local CoreGui = game:GetService("CoreGui")
+local localPlayer = Players.LocalPlayer
 
--- SETTINGS
-local Settings = {
-ShowName = true,
-ShowDistance = true,
-ESPTeammates = false,
-ShowNPC = true
+if CoreGui:FindFirstChild("GeminiESP_V6") then
+    CoreGui:FindFirstChild("GeminiESP_V6"):Destroy()
+end
+
+local ESP_Settings = {
+    Enabled = true,
+    Names = true,
+    Distance = true,
+    Health = true,
+    Teammates = true, 
+    NPCs = false 
 }
 
-local ESP = {}
+-- 1. GIAO DIỆN
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "GeminiESP_V6"
+screenGui.Parent = CoreGui
+screenGui.ResetOnSpawn = false
 
--- GUI
-local Gui = Instance.new("ScreenGui", game.CoreGui)
-Gui.Name = "SimpleESP"
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 220, 0, 320)
+mainFrame.Position = UDim2.new(0.5, 140, 0.3, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+mainFrame.Active = true
+mainFrame.Draggable = true 
+mainFrame.Parent = screenGui
+Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 10)
+Instance.new("UIStroke", mainFrame).Color = Color3.fromRGB(0, 255, 150)
 
-local Main = Instance.new("Frame", Gui)
-Main.Size = UDim2.new(0,200,0,170)
-Main.Position = UDim2.new(0.02,0,0.35,0)
-Main.BackgroundColor3 = Color3.fromRGB(30,30,30)
-Main.Active = true
-Main.Draggable = true
-Instance.new("UICorner",Main)
-
-local title = Instance.new("TextLabel",Main)
-title.Size = UDim2.new(1,0,0,25)
-title.BackgroundTransparency = 1
-title.Text = "Simple ESP"
-title.TextColor3 = Color3.new(1,1,1)
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 45)
+title.Text = "GEMINI ESP V6"
+title.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+title.TextColor3 = Color3.fromRGB(0, 255, 150)
 title.Font = Enum.Font.GothamBold
-title.TextSize = 14
+title.TextSize = 16
+title.Parent = mainFrame
+Instance.new("UICorner", title).CornerRadius = UDim.new(0, 10)
 
-local function Toggle(text,pos,key)
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -35, 0, 7)
+closeBtn.Text = "X"
+closeBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+closeBtn.TextColor3 = Color3.new(1, 1, 1)
+closeBtn.Parent = mainFrame
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 6)
 
-local b = Instance.new("TextButton",Main)
-b.Size = UDim2.new(0.9,0,0,25)
-b.Position = UDim2.new(0.05,0,0,pos)
-b.BackgroundColor3 = Color3.fromRGB(45,45,45)
-b.TextColor3 = Color3.new(1,1,1)
-b.Font = Enum.Font.Gotham
-b.TextSize = 13
-Instance.new("UICorner",b)
+local openBtn = Instance.new("TextButton")
+openBtn.Size = UDim2.new(0, 55, 0, 55)
+openBtn.Position = UDim2.new(0, 15, 0.5, 110)
+openBtn.Text = "ESP"
+openBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+openBtn.Font = Enum.Font.GothamBold
+openBtn.Visible = false
+openBtn.Parent = screenGui
+Instance.new("UICorner", openBtn).CornerRadius = UDim.new(1, 0)
 
-local function refresh()
-b.Text = text..": "..(Settings[key] and "ON" or "OFF")
+local container = Instance.new("ScrollingFrame")
+container.Size = UDim2.new(1, -10, 1, -55)
+container.Position = UDim2.new(0, 5, 0, 50)
+container.BackgroundTransparency = 1
+container.CanvasSize = UDim2.new(0,0,0,300)
+container.ScrollBarThickness = 0
+container.Parent = mainFrame
+Instance.new("UIListLayout", container).Padding = UDim.new(0, 5)
+
+closeBtn.MouseButton1Click:Connect(function() mainFrame.Visible = false openBtn.Visible = true end)
+openBtn.MouseButton1Click:Connect(function() mainFrame.Visible = true openBtn.Visible = false end)
+
+local function createToggle(name, key)
+    local btn = Instance.new("TextButton", container)
+    btn.Size = UDim2.new(0.95, 0, 0, 38)
+    btn.BackgroundColor3 = ESP_Settings[key] and Color3.fromRGB(0, 100, 60) or Color3.fromRGB(40, 40, 40)
+    btn.Text = name .. (ESP_Settings[key] and ": BẬT" or ": TẮT")
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    btn.Font = Enum.Font.GothamMedium
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+    
+    btn.MouseButton1Click:Connect(function()
+        ESP_Settings[key] = not ESP_Settings[key]
+        btn.Text = name .. (ESP_Settings[key] and ": BẬT" or ": TẮT")
+        btn.BackgroundColor3 = ESP_Settings[key] and Color3.fromRGB(0, 100, 60) or Color3.fromRGB(40, 40, 40)
+    end)
 end
 
-refresh()
+createToggle("ESP TỔNG", "Enabled")
+createToggle("HIỆN TÊN (@)", "Names")
+createToggle("HIỆN KHOẢNG CÁCH", "Distance")
+createToggle("HIỆN MÁU PLAYER", "Health")
+createToggle("HIỆN ĐỒNG ĐỘI", "Teammates")
+createToggle("HIỆN NPC", "NPCs")
 
-b.MouseButton1Click:Connect(function()
+-- 2. LOGIC ESP CORE (USERNAME)
+local function applyESP(model, isNPC)
+    if model == localPlayer.Character then return end
 
-Settings[key] = not Settings[key]
-refresh()
+    local root = model:WaitForChild("HumanoidRootPart", 10)
+    if not root then return end
 
+    local bgui = Instance.new("BillboardGui", root)
+    bgui.Name = "GeminiTag"
+    bgui.AlwaysOnTop = true
+    bgui.Size = UDim2.new(0, 200, 0, 50)
+    bgui.ExtentsOffset = Vector3.new(0, 3, 0)
+
+    local txt = Instance.new("TextLabel", bgui)
+    txt.Size = UDim2.new(1, 0, 0.7, 0)
+    txt.BackgroundTransparency = 1
+    txt.Font = Enum.Font.GothamBold
+    txt.TextSize = 14
+    txt.TextStrokeTransparency = 0
+
+    local hpBG, hpFill
+    if not isNPC then
+        hpBG = Instance.new("Frame", bgui)
+        hpBG.Size = UDim2.new(0.4, 0, 0, 3)
+        hpBG.Position = UDim2.new(0.3, 0, 0.75, 0)
+        hpBG.BackgroundColor3 = Color3.new(0, 0, 0)
+        hpBG.BorderSizePixel = 0
+        
+        hpFill = Instance.new("Frame", hpBG)
+        hpFill.Size = UDim2.new(1, 0, 1, 0)
+        hpFill.BorderSizePixel = 0
+    end
+
+    RunService.RenderStepped:Connect(function()
+        if not model or not model.Parent or not ESP_Settings.Enabled then
+            bgui.Enabled = false
+            return
+        end
+
+        local hum = model:FindFirstChildOfClass("Humanoid")
+        local p = Players:GetPlayerFromCharacter(model)
+        
+        local isTeam = false
+        if p and p.Team == localPlayer.Team and p.Team ~= nil then
+            isTeam = true
+        end
+
+        local color = Color3.new(1, 1, 1) -- Địch: Trắng
+        if isNPC then
+            color = Color3.new(1, 1, 0) -- NPC: Vàng
+        elseif isTeam then
+            color = Color3.new(0, 1, 1) -- Đồng đội: Xanh Cyan
+        end
+
+        local show = true
+        if isTeam and not ESP_Settings.Teammates then show = false end
+        if isNPC and not ESP_Settings.NPCs then show = false end
+        if hum and hum.Health <= 0 then show = false end
+
+        bgui.Enabled = show
+
+        if show then
+            local dist = math.floor((root.Position - localPlayer.Character.HumanoidRootPart.Position).Magnitude)
+            
+            -- ĐỔI SANG @USERNAME CHO PLAYER
+            local nameToDisplay = ""
+            if p then
+                nameToDisplay = "@" .. p.Name -- Sử dụng Username
+            else
+                nameToDisplay = model.Name -- Giữ nguyên tên gốc nếu là NPC
+            end
+
+            local nStr = ESP_Settings.Names and nameToDisplay or ""
+            local dStr = ESP_Settings.Distance and " ["..dist.."m]" or ""
+            
+            txt.Text = nStr .. dStr
+            txt.TextColor3 = color
+
+            if not isNPC and hum and ESP_Settings.Health then
+                hpBG.Visible = true
+                hpFill.Size = UDim2.new(math.clamp(hum.Health/hum.MaxHealth, 0, 1), 0, 1, 0)
+                hpFill.BackgroundColor3 = Color3.fromHSV((math.clamp(hum.Health/hum.MaxHealth, 0, 1))*0.3, 1, 1)
+            elseif hpBG then
+                hpBG.Visible = false
+            end
+        end
+    end)
+end
+
+-- Theo dõi Player
+Players.PlayerAdded:Connect(function(p)
+    p.CharacterAdded:Connect(function(c) applyESP(c, false) end)
 end)
-
+for _, p in pairs(Players:GetPlayers()) do
+    if p.Character then applyESP(p.Character, false) end
 end
 
-Toggle("Show Name",35,"ShowName")
-Toggle("Show Distance",65,"ShowDistance")
-Toggle("ESP Teammates",95,"ESPTeammates")
-Toggle("ESP NPC",125,"ShowNPC")
-
--- team check
-local function shouldShow(p)
-
-if p == LocalPlayer then return false end
-
-if not Settings.ESPTeammates then
-if LocalPlayer.Team and p.Team and p.Team == LocalPlayer.Team then
-return false
-end
-end
-
-return true
-
-end
-
--- create esp
-local function createESP(id,name)
-
-local bb = Instance.new("BillboardGui")
-bb.Size = UDim2.new(0,200,0,30)
-bb.AlwaysOnTop = true
-bb.StudsOffset = Vector3.new(0,3,0)
-
-local txt = Instance.new("TextLabel",bb)
-txt.Size = UDim2.new(1,0,1,0)
-txt.BackgroundTransparency = 1
-txt.Font = Enum.Font.Gotham
-txt.TextStrokeTransparency = 0
-txt.TextSize = 13
-txt.TextColor3 = Color3.new(1,1,1)
-
-ESP[id] = {
-BB = bb,
-TXT = txt,
-Name = name
-}
-
-end
-
--- setup player
-local function setupPlayer(p)
-
-if ESP[p] then return end
-
-createESP(p,p.Name)
-
-end
-
--- remove player
-local function removePlayer(p)
-
-if ESP[p] then
-ESP[p].BB:Destroy()
-ESP[p] = nil
-end
-
-end
-
--- setup existing players
-for _,p in pairs(Players:GetPlayers()) do
-setupPlayer(p)
-end
-
-Players.PlayerAdded:Connect(setupPlayer)
-Players.PlayerRemoving:Connect(removePlayer)
-
--- scan NPC
-local function scanNPC()
-
-for _,v in pairs(workspace:GetDescendants()) do
-
-if v:IsA("Humanoid") then
-
-local char = v.Parent
-local player = Players:GetPlayerFromCharacter(char)
-
-if not player and not ESP[v] then
-
-createESP(v,char.Name)
-
-end
-
-end
-
-end
-
-end
-
-scanNPC()
-
--- update loop
-RunService.RenderStepped:Connect(function()
-
-for id,data in pairs(ESP) do
-
-local char
-local hrp
-
-if typeof(id) == "Instance" and id:IsA("Player") then
-
-char = id.Character
-hrp = char and char:FindFirstChild("HumanoidRootPart")
-
-if not shouldShow(id) then
-data.BB.Enabled = false
-continue
-end
-
-else
-
-char = id.Parent
-hrp = char and char:FindFirstChild("HumanoidRootPart")
-
-if not Settings.ShowNPC then
-data.BB.Enabled = false
-continue
-end
-
-end
-
-local hum = char and char:FindFirstChildOfClass("Humanoid")
-
-if hum and hum.Health > 0 and hrp then
-
-data.BB.Enabled = true
-data.BB.Parent = hrp
-
-local text = ""
-
-if Settings.ShowName then
-text = data.Name
-end
-
-if Settings.ShowDistance then
-
-local dist = math.floor((Camera.CFrame.Position - hrp.Position).Magnitude)
-
-if text ~= "" then
-text = text.." ["..dist.."]"
-else
-text = dist
-end
-
-end
-
-data.TXT.Text = text
-
-else
-
-data.BB.Enabled = false
-
-end
-
-end
-
+-- Quét NPC định kỳ
+task.spawn(function()
+    while task.wait(5) do
+        for _, m in pairs(workspace:GetDescendants()) do
+            if m:IsA("Model") and m:FindFirstChildOfClass("Humanoid") and m:FindFirstChild("HumanoidRootPart") then
+                if not Players:GetPlayerFromCharacter(m) and not m.HumanoidRootPart:FindFirstChild("GeminiTag") then
+                    applyESP(m, true)
+                end
+            end
+        end
+    end
 end)
