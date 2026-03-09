@@ -38,7 +38,7 @@ local function capNhatGUI()
 		text.Text = "AIMBOT: BẬT\nGiữ Chuột Phải để khóa mục tiêu"
 	else
 		text.TextColor3 = Color3.fromRGB(255,0,0)
-		text.Text = "AIMBOT: TẮT\nNhấn G để bật"
+		text.Text = "AIMBOT: TẮT\nNhấn H để bật"
 	end
 end
 
@@ -76,7 +76,7 @@ end
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	if gameProcessed then return end
 
-	if input.KeyCode == Enum.KeyCode.G then
+	if input.KeyCode == Enum.KeyCode.H then
 		aimbotBat = not aimbotBat
 		capNhatGUI()
 	end
