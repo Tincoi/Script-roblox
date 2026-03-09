@@ -39,7 +39,7 @@ end
 
 local function stopSpam()
     isSpamming = false
-    _G.SpamBtn.Text = "SPAM TP (H): TẮT"
+    _G.SpamBtn.Text = "SPAM TP (G): TẮT"
     _G.SpamBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 end
 
@@ -286,7 +286,7 @@ end)
 spamBtn.MouseButton1Click:Connect(function()
     if not selectedPlayer then return end
     isSpamming = not isSpamming
-    spamBtn.Text = isSpamming and "SPAM TP (H): ĐANG BẬT" or "SPAM TP (H): TẮT"
+    spamBtn.Text = isSpamming and "SPAM TP (G): ĐANG BẬT" or "SPAM TP (G): TẮT"
     spamBtn.BackgroundColor3 = isSpamming and Color3.fromRGB(0, 180, 0) or Color3.fromRGB(50, 50, 50)
 end)
 
@@ -294,9 +294,9 @@ UserInputService.InputBegan:Connect(function(input, processed)
     if processed then return end
     if input.KeyCode == Enum.KeyCode.K then toggleGui(not mainFrame.Visible)
     elseif input.KeyCode == Enum.KeyCode.F and selectedPlayer then stopSpam() safeTeleport(selectedPlayer)
-    elseif input.KeyCode == Enum.KeyCode.H and selectedPlayer then
+    elseif input.KeyCode == Enum.KeyCode.G and selectedPlayer then
         isSpamming = not isSpamming
-        spamBtn.Text = isSpamming and "SPAM TP (H): ĐANG BẬT" or "SPAM TP (H): TẮT"
+        spamBtn.Text = isSpamming and "SPAM TP (G): ĐANG BẬT" or "SPAM TP (G): TẮT"
         spamBtn.BackgroundColor3 = isSpamming and Color3.fromRGB(0, 180, 0) or Color3.fromRGB(50, 50, 50)
     end
 end)
