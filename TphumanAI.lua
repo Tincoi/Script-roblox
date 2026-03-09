@@ -1,13 +1,14 @@
 --[[ 
-    TELEPORT GUI ULTIMATE V4 (AUTO-HIDE ON TP)
-    - Tự động ẩn GUI khi dịch chuyển (Teleport).
-    - Font chữ lớn, dễ nhìn trên Mobile/PC.
-    - Keybind: F (Teleport), K (Toggle).
-    - Chức năng Xem (Spectate) tự tắt khi TP.
+    TELEPORT GUI ULTIMATE V6 (STEPPED DISTANCE & AUTO-STOP ON DEATH)
+    - Keybind G: Spam TP (Tự tắt khi mục tiêu chết hoặc thoát).
+    - Slider: Chỉnh khoảng cách theo bậc (0, 10, 20... 100 studs).
+    - Keybind F: TP 1 lần & Ẩn GUI.
+    - Chữ lớn, dễ nhìn cho Mobile & PC.
 ]]
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 local CoreGui = game:GetService("CoreGui")
 local player = Players.LocalPlayer
 local camera = workspace.CurrentCamera
@@ -18,55 +19,51 @@ end
 
 local selectedPlayer = nil
 local isSpectating = false
+local isSpamming = false
+local tpDistance = 0 -- Mặc định sát lưng
 
--- 1. HÀM ĐIỀU KHIỂN GUI
-local function toggleGui(forceState)
-    if forceState ~= nil then
-        _G.MainFrame.Visible = forceState
-        _G.OpenBtn.Visible = not forceState
-    else
-        _G.MainFrame.Visible = not _G.MainFrame.Visible
-        _G.OpenBtn.Visible = not _G.MainFrame.Visible
-    end
-end
-
--- 2. LOGIC HỆ THỐNG
+-- 1. HÀM HỆ THỐNG
 local function stopSpectating()
     isSpectating = false
     camera.CameraSubject = player.Character:FindFirstChild("Humanoid")
     return "XEM: TẮT"
 end
 
-local function startSpectating(target)
-    if target and target.Character and target.Character:FindFirstChild("Humanoid") then
-        camera.CameraSubject = target.Character.Humanoid
-        isSpectating = true
-        return "XEM: " .. target.DisplayName:upper()
-    end
-    return stopSpectating()
+local function toggleGui(forceState)
+    _G.MainFrame.Visible = forceState
+    _G.OpenBtn.Visible = not forceState
 end
 
-local function teleportTo(targetPlayer)
-    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+local function stopSpamLogic()
+    isSpamming = false
+    _G.SpamBtn.Text = "SPAM TP (G): TẮT"
+    _G.SpamBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+end
+
+local function teleportAction(target)
+    if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+        -- KIỂM TRA NẾU ĐỐI PHƯƠNG CHẾT THÌ DỪNG SPAM
+        local hum = target.Character:FindFirstChild("Humanoid")
+        if hum and hum.Health <= 0 then
+            stopSpamLogic()
+            return
+        end
+        
         local char = player.Character
         if char and char:FindFirstChild("HumanoidRootPart") then
-            -- Tắt xem nếu đang bật
-            if isSpectating then 
-                stopSpectating() 
-                _G.SpectateBtn.Text = "XEM: TẮT"
-                _G.SpectateBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            end
-            
-            -- Thực hiện dịch chuyển
-            char.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
-            
-            -- TỰ ĐỘNG ẨN GUI SAU KHI TP
-            toggleGui(false)
+            char.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, tpDistance)
         end
     end
 end
 
--- 3. GIAO DIỆN
+-- Vòng lặp Spam
+RunService.RenderStepped:Connect(function()
+    if isSpamming and selectedPlayer then
+        teleportAction(selectedPlayer)
+    end
+end)
+
+-- 2. GIAO DIỆN
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TeleportGuiSystem"
 screenGui.Parent = CoreGui
@@ -74,7 +71,7 @@ screenGui.ResetOnSpawn = false
 
 local mainFrame = Instance.new("Frame")
 _G.MainFrame = mainFrame
-mainFrame.Size = UDim2.new(0, 260, 0, 420)
+mainFrame.Size = UDim2.new(0, 260, 0, 480)
 mainFrame.Position = UDim2.new(0.5, -130, 0.3, 0)
 mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 mainFrame.BorderSizePixel = 0
@@ -85,7 +82,7 @@ Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 10)
 
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 50)
-title.Text = "TP MENU (F)"
+title.Text = "TP MENU (F/G)"
 title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 title.TextColor3 = Color3.new(1, 1, 1)
 title.Font = Enum.Font.GothamBold
@@ -99,13 +96,11 @@ closeBtn.Position = UDim2.new(1, -40, 0, 7)
 closeBtn.Text = "X"
 closeBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 closeBtn.TextColor3 = Color3.new(1, 1, 1)
-closeBtn.Font = Enum.Font.GothamBold
 closeBtn.TextSize = 18
 closeBtn.Parent = mainFrame
 Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 6)
 
 local spectateBtn = Instance.new("TextButton")
-_G.SpectateBtn = spectateBtn
 spectateBtn.Size = UDim2.new(1, -20, 0, 35)
 spectateBtn.Position = UDim2.new(0, 10, 0, 60)
 spectateBtn.Text = "XEM: TẮT"
@@ -116,9 +111,72 @@ spectateBtn.TextSize = 14
 spectateBtn.Parent = mainFrame
 Instance.new("UICorner", spectateBtn).CornerRadius = UDim.new(0, 6)
 
+local spamBtn = Instance.new("TextButton")
+_G.SpamBtn = spamBtn
+spamBtn.Size = UDim2.new(1, -20, 0, 35)
+spamBtn.Position = UDim2.new(0, 10, 0, 100)
+spamBtn.Text = "SPAM TP (G): TẮT"
+spamBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+spamBtn.TextColor3 = Color3.new(1, 1, 1)
+spamBtn.Font = Enum.Font.GothamBold
+spamBtn.TextSize = 14
+spamBtn.Parent = mainFrame
+Instance.new("UICorner", spamBtn).CornerRadius = UDim.new(0, 6)
+
+-- Slider bậc (Distance Stepped)
+local distLabel = Instance.new("TextLabel")
+distLabel.Size = UDim2.new(1, -20, 0, 20)
+distLabel.Position = UDim2.new(0, 10, 0, 140)
+distLabel.Text = "Khoảng cách: " .. tpDistance .. " studs"
+distLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+distLabel.BackgroundTransparency = 1
+distLabel.TextSize = 14
+distLabel.Parent = mainFrame
+
+local distBtn = Instance.new("TextButton")
+distBtn.Size = UDim2.new(1, -20, 0, 12)
+distBtn.Position = UDim2.new(0, 10, 0, 165)
+distBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+distBtn.Text = ""
+distBtn.Parent = mainFrame
+Instance.new("UICorner", distBtn).CornerRadius = UDim.new(0, 4)
+
+local sliderFrame = Instance.new("Frame")
+sliderFrame.Size = UDim2.new(0, 0, 1, 0)
+sliderFrame.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
+sliderFrame.Parent = distBtn
+Instance.new("UICorner", sliderFrame).CornerRadius = UDim.new(0, 4)
+
+-- 3. XỬ LÝ SỰ KIỆN
+local function toggleSpam()
+    if not selectedPlayer then return end
+    isSpamming = not isSpamming
+    if isSpamming then
+        spamBtn.Text = "SPAM TP (G): ĐANG BẬT"
+        spamBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    else
+        stopSpamLogic()
+    end
+end
+
+-- Slider theo bậc (0, 10, 20... 100)
+distBtn.MouseButton1Click:Connect(function()
+    local mousePos = UserInputService:GetMouseLocation().X
+    local btnPos = distBtn.AbsolutePosition.X
+    local btnWidth = distBtn.AbsoluteSize.X
+    local percent = math.clamp((mousePos - btnPos) / btnWidth, 0, 1)
+    
+    -- Chia bậc mỗi 10 studs, tối đa 100 studs
+    local step = math.floor(percent * 10) 
+    tpDistance = step * 10
+    
+    sliderFrame.Size = UDim2.new(step / 10, 0, 1, 0)
+    distLabel.Text = "Khoảng cách: " .. tpDistance .. " studs"
+end)
+
 local scrollingFrame = Instance.new("ScrollingFrame")
-scrollingFrame.Size = UDim2.new(1, -10, 1, -165)
-scrollingFrame.Position = UDim2.new(0, 5, 0, 105)
+scrollingFrame.Size = UDim2.new(1, -10, 1, -230)
+scrollingFrame.Position = UDim2.new(0, 5, 0, 185)
 scrollingFrame.BackgroundTransparency = 1
 scrollingFrame.ScrollBarThickness = 5
 scrollingFrame.Parent = mainFrame
@@ -135,17 +193,12 @@ openBtn.Text = "TP"
 openBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 openBtn.BackgroundTransparency = 0.2
 openBtn.TextColor3 = Color3.new(1, 1, 1)
-openBtn.TextSize = 18
 openBtn.Visible = false
 openBtn.Parent = screenGui
 Instance.new("UICorner", openBtn).CornerRadius = UDim.new(1, 0)
 
--- 4. CẬP NHẬT DANH SÁCH
 local function updateList()
-    for _, child in pairs(scrollingFrame:GetChildren()) do
-        if child:IsA("TextButton") then child:Destroy() end
-    end
-
+    for _, child in pairs(scrollingFrame:GetChildren()) do if child:IsA("TextButton") then child:Destroy() end end
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= player then
             local btn = Instance.new("TextButton")
@@ -154,7 +207,7 @@ local function updateList()
             btn.Text = ""
             btn.Parent = scrollingFrame
             Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
-
+            
             local dName = Instance.new("TextLabel")
             dName.Size = UDim2.new(1, -15, 0, 30)
             dName.Position = UDim2.new(0, 12, 0, 4)
@@ -176,46 +229,44 @@ local function updateList()
             uName.TextSize = 12
             uName.TextXAlignment = Enum.TextXAlignment.Left
             uName.Parent = btn
-            
+
             btn.MouseButton1Click:Connect(function()
                 if selectedPlayer == p then
-                    teleportTo(p)
+                    stopSpamLogic()
+                    teleportAction(p)
+                    toggleGui(false)
                 else
                     selectedPlayer = p
-                    if isSpectating then spectateBtn.Text = startSpectating(p) end
+                    if isSpamming then stopSpamLogic() end
+                    if isSpectating then camera.CameraSubject = p.Character.Humanoid end
                     updateList()
                 end
             end)
         end
     end
-    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y)
 end
 
--- 5. ĐIỀU KHIỂN
 closeBtn.MouseButton1Click:Connect(function() toggleGui(false) end)
 openBtn.MouseButton1Click:Connect(function() toggleGui(true) end)
+spamBtn.MouseButton1Click:Connect(toggleSpam)
 
 spectateBtn.MouseButton1Click:Connect(function()
     if not selectedPlayer then return end
-    if isSpectating then
-        spectateBtn.Text = stopSpectating()
-        spectateBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    else
-        spectateBtn.Text = startSpectating(selectedPlayer)
-        spectateBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    end
+    isSpectating = not isSpectating
+    spectateBtn.Text = isSpectating and ("XEM: " .. selectedPlayer.DisplayName:upper()) or stopSpectating()
+    spectateBtn.BackgroundColor3 = isSpectating and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(60, 60, 60)
 end)
 
 UserInputService.InputBegan:Connect(function(input, processed)
     if processed then return end
-    if input.KeyCode == Enum.KeyCode.K then toggleGui()
-    elseif input.KeyCode == Enum.KeyCode.F then if selectedPlayer then teleportTo(selectedPlayer) end end
+    if input.KeyCode == Enum.KeyCode.K then toggleGui(not mainFrame.Visible)
+    elseif input.KeyCode == Enum.KeyCode.F and selectedPlayer then 
+        stopSpamLogic()
+        teleportAction(selectedPlayer)
+        toggleGui(false)
+    elseif input.KeyCode == Enum.KeyCode.G then toggleSpam() end
 end)
 
 Players.PlayerAdded:Connect(updateList)
-Players.PlayerRemoving:Connect(function(p) 
-    if selectedPlayer == p then selectedPlayer = nil if isSpectating then stopSpectating() end end 
-    updateList() 
-end)
-
+Players.PlayerRemoving:Connect(function(p) if selectedPlayer == p then selectedPlayer = nil stopSpamLogic() stopSpectating() end updateList() end)
 updateList()
