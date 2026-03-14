@@ -82,6 +82,7 @@ mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 mainFrame.Active = true
 mainFrame.Draggable = true 
 mainFrame.Parent = screenGui
+mainFrame.Visible = false -- Chỉnh GUI chính ẩn khi bắt đầu
 Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 12)
 Instance.new("UIStroke", mainFrame).Color = Color3.fromRGB(255, 165, 0)
 
@@ -199,7 +200,7 @@ openBtn.Position = UDim2.new(0, 15, 0.5, -30)
 openBtn.Text = "GEMINI"
 openBtn.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
 openBtn.Font = Enum.Font.GothamBold
-openBtn.Visible = false
+openBtn.Visible = true
 openBtn.Parent = screenGui
 Instance.new("UICorner", openBtn).CornerRadius = UDim.new(1, 0)
 
