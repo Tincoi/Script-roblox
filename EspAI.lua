@@ -47,6 +47,7 @@ mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 mainFrame.Active = true
 mainFrame.Draggable = true 
 mainFrame.Parent = screenGui
+mainFrame.Visible = false -- Chỉnh GUI chính ẩn khi bắt đầu
 Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 10)
 Instance.new("UIStroke", mainFrame).Color = Color3.fromRGB(0, 255, 150)
 
@@ -120,7 +121,7 @@ closeBtn.MouseButton1Click:Connect(function() mainFrame.Visible = false openBtn.
 openBtn.MouseButton1Click:Connect(function() 
     if mainFrame.Visible == false then
         mainFrame.Visible = true 
-        openBtn.Visible = false 
+        openBtn.Visible = true
     end
 end)
 
