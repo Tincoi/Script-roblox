@@ -77,7 +77,7 @@ openBtn.Position = UDim2.new(0, 15, 0.5, 0)
 openBtn.Text = "ESP"
 openBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
 openBtn.Font = Enum.Font.GothamBold
-openBtn.Visible = false
+openBtn.Visible = true
 openBtn.Parent = screenGui
 Instance.new("UICorner", openBtn).CornerRadius = UDim.new(1, 0)
 
@@ -121,7 +121,7 @@ closeBtn.MouseButton1Click:Connect(function() mainFrame.Visible = false openBtn.
 openBtn.MouseButton1Click:Connect(function() 
     if mainFrame.Visible == false then
         mainFrame.Visible = true 
-        openBtn.Visible = true
+        openBtn.Visible = false
     end
 end)
 
