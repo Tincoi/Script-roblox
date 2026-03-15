@@ -15,9 +15,9 @@ screenGui.ResetOnSpawn = false
 screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0,220,0,70)
-frame.Position = UDim2.new(1,-230,1,-80)
-frame.BackgroundTransparency = 0.4
+frame.Size = UDim2.new(0,200,0,50)
+frame.Position = UDim2.new(1,-500,1,-45)
+frame.BackgroundTransparency = 1
 frame.BackgroundColor3 = Color3.fromRGB(0,0,0)
 frame.BorderSizePixel = 0
 frame.Parent = screenGui
@@ -28,7 +28,7 @@ text.Position = UDim2.new(0,5,0,5)
 text.BackgroundTransparency = 1
 text.TextScaled = true
 text.Font = Enum.Font.SourceSansBold
-text.TextStrokeTransparency = 0.5
+text.TextStrokeTransparency = 0.1
 text.TextYAlignment = Enum.TextYAlignment.Top
 text.Parent = frame
 
