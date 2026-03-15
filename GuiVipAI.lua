@@ -17,7 +17,7 @@ gui.Name = "GuiVipTinkoj"
 local openBtn = Instance.new("TextButton",gui)
 openBtn.Size = UDim2.new(0,100,0,40)
 openBtn.Position = UDim2.new(0,50,0,200)
-openBtn.Text = "OPEN"
+openBtn.Text = "Mở VIP"
 openBtn.BackgroundColor3 = Color3.fromRGB(35,35,35)
 openBtn.TextColor3 = Color3.new(1,1,1)
 Instance.new("UICorner",openBtn)
