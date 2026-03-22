@@ -119,7 +119,7 @@ local function applyESP(player)
             while char and char.Parent and root and root.Parent do
                 if ESP_Settings.Enabled and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
                     local dist = (root.Position - localPlayer.Character.HumanoidRootPart.Position).Magnitude
-                    if dist < 20000 then
+                    if dist < 50000 then
                         bgui.Enabled = true
                         local ptr = playerPointers[player]
                         
