@@ -24,7 +24,7 @@ local ESP_Settings = {
     ShowBounty = true,
     ShowLevel = true,
     ShowPVP = true,
-    RefreshRate = 0.05 -- 20 FPS cho ESP là cực kỳ mượt và nhẹ nhất cho máy
+    RefreshRate = 1 -- 20 FPS cho ESP là cực kỳ mượt và nhẹ nhất cho máy
 }
 
 local function formatBounty(num)
@@ -106,7 +106,7 @@ local function applyESP(player)
 
         local bgui = Instance.new("BillboardGui", root)
         bgui.Name = "GeminiTag"; bgui.AlwaysOnTop = true; bgui.Size = UDim2.new(0, 200, 0, 60)
-        bgui.SizeOffset = Vector2.new(0, -0.7) -- Né Haki chuẩn
+        bgui.SizeOffset = Vector2.new(0, 0.7) -- Né Haki chuẩn
         bgui.ExtentsOffset = Vector3.new(0, 2.2, 0)
 
         local txt = Instance.new("TextLabel", bgui)
@@ -119,7 +119,7 @@ local function applyESP(player)
             while char and char.Parent and root and root.Parent do
                 if ESP_Settings.Enabled and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
                     local dist = (root.Position - localPlayer.Character.HumanoidRootPart.Position).Magnitude
-                    if dist < 2500 then
+                    if dist < 5000 then
                         bgui.Enabled = true
                         local ptr = playerPointers[player]
                         
