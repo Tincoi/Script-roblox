@@ -1,9 +1,8 @@
 --[[ 
-    GEMINI ESP V7.9.1 - FPS BOOSTER (FIX TỤT FPS)
-    - Fix: Loại bỏ quét GetDescendants trong vòng lặp (Chỉ quét 1 lần khi char load).
-    - Fix: Tối ưu bộ nhớ, giải phóng CPU.
-    - Giữ nguyên: SizeOffset = -0.7 (Né Haki).
-    - Giữ nguyên: Toàn bộ hiển thị Level/PVP/Bounty.
+    GEMINI ESP V7.9.2 - FIX LỖI LOAD DATA NGƯỜI VÀO SAU
+    - Fix: Tự động quét lại (Retry) nếu Level là "???" hoặc PVP là "Off".
+    - Tối ưu: Chỉ quét lại cho đến khi có dữ liệu, sau đó dừng để tránh lag.
+    - Giữ: SizeOffset = -0.7 và Tầm nhìn xa 5000m.
 ]]
 
 local Players = game:GetService("Players")
@@ -11,7 +10,6 @@ local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
 local localPlayer = Players.LocalPlayer
 
--- Dọn dẹp bản cũ
 if CoreGui:FindFirstChild("GeminiESP_V7_Final") then
     CoreGui:FindFirstChild("GeminiESP_V7_Final"):Destroy()
 end
@@ -24,7 +22,7 @@ local ESP_Settings = {
     ShowBounty = true,
     ShowLevel = true,
     ShowPVP = true,
-    RefreshRate = 1 -- 20 FPS cho ESP là cực kỳ mượt và nhẹ nhất cho máy
+    RefreshRate = 1 -- Bạn có thể chỉnh lên 0.1 nếu muốn nhẹ máy hơn
 }
 
 local function formatBounty(num)
@@ -35,78 +33,49 @@ local function formatBounty(num)
 end
 
 -- =========================================================
--- LOGIC TÌM KIẾM TỐI ƯU (CHỈ CHẠY 1 LẦN KHI PLAYER VÀO)
+-- LOGIC TÌM KIẾM (CÓ CƠ CHẾ QUÉT LẠI)
 -- =========================================================
-local playerPointers = {} -- Lưu trữ đường dẫn trực tiếp đến Level/PVP để đọc nhanh
+local playerPointers = {}
 
 local function findDataPointers(player)
-    local data = {lvObj = nil, pvpObj = nil, lastBounty = 0}
+    local data = {lvObj = nil, pvpObj = nil}
     
-    -- Tìm trong leaderstats trước (Nhanh nhất)
-    local ls = player:FindFirstChild("leaderstats")
+    -- Ưu tiên tìm trong leaderstats trước
+    local ls = player:FindFirstChild("leaderstats") or player:FindFirstChild("Data")
     if ls then
         data.lvObj = ls:FindFirstChild("Level") or ls:FindFirstChild("Lv")
         data.pvpObj = ls:FindFirstChild("PVP") or ls:FindFirstChild("EnablePvp")
     end
 
-    -- Nếu không thấy trong leaderstats mới đi quét (Chỉ quét 1 lần duy nhất ở đây)
+    -- Nếu vẫn thiếu, mới dùng GetDescendants (Quét sâu)
     if not data.lvObj or not data.pvpObj then
         for _, v in pairs(player:GetDescendants()) do
             if v:IsA("ValueBase") then
                 local n = v.Name:lower()
-                if not data.lvObj and (n == "level" or n == "lv" or n == "lvl") then
-                    data.lvObj = v
-                end
-                if not data.pvpObj and (n == "enablepvp" or n == "pvp" or n == "pvpstatus") then
-                    data.pvpObj = v
-                end
+                if not data.lvObj and (n == "level" or n == "lv" or n == "lvl") then data.lvObj = v end
+                if not data.pvpObj and (n == "enablepvp" or n == "pvp" or n == "pvpstatus") then data.pvpObj = v end
             end
             if data.lvObj and data.pvpObj then break end
         end
     end
     playerPointers[player] = data
+    return (data.lvObj ~= nil) -- Trả về true nếu đã tìm thấy Level
 end
 
 -- =========================================================
--- GIAO DIỆN MENU (UI)
--- =========================================================
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "GeminiESP_V7_Final"; screenGui.Parent = CoreGui; screenGui.ResetOnSpawn = false
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 200, 0, 280); mainFrame.Position = UDim2.new(0.5, -100, 0.3, 0); mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15); mainFrame.Active = true; mainFrame.Visible = false; mainFrame.Parent = screenGui
-Instance.new("UICorner", mainFrame)
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0, 40); title.Text = "GEMINI ESP V7.9.1"; title.BackgroundColor3 = Color3.fromRGB(25, 25, 25); title.TextColor3 = Color3.fromRGB(0, 255, 150); title.Font = Enum.Font.GothamBold; title.Parent = mainFrame
-local openBtn = Instance.new("TextButton")
-openBtn.Size = UDim2.new(0, 50, 0, 50); openBtn.Position = UDim2.new(0, 10, 0.5, 0); openBtn.Text = "ESP"; openBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 150); openBtn.Parent = screenGui; Instance.new("UICorner", openBtn).CornerRadius = UDim.new(1, 0)
-openBtn.MouseButton1Click:Connect(function() mainFrame.Visible = not mainFrame.Visible end)
-
-local container = Instance.new("ScrollingFrame")
-container.Size = UDim2.new(1, -10, 1, -50); container.Position = UDim2.new(0, 5, 0, 45); container.BackgroundTransparency = 1; container.CanvasSize = UDim2.new(0,0,0,250); container.ScrollBarThickness = 0; container.Parent = mainFrame
-Instance.new("UIListLayout", container).Padding = UDim.new(0, 5)
-
-local function createToggle(name, key)
-    local btn = Instance.new("TextButton", container)
-    btn.Size = UDim2.new(0.95, 0, 0, 30); btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40); btn.Text = name; btn.TextColor3 = Color3.new(1, 1, 1); btn.Font = Enum.Font.Gotham; btn.Parent = container; Instance.new("UICorner", btn)
-    btn.MouseButton1Click:Connect(function() ESP_Settings[key] = not ESP_Settings[key]; btn.BackgroundColor3 = ESP_Settings[key] and Color3.fromRGB(0, 100, 60) or Color3.fromRGB(40, 40, 40) end)
-end
-createToggle("HIỆN TÊN", "Names"); createToggle("LEVEL", "ShowLevel"); createToggle("PVP", "ShowPVP"); createToggle("BOUNTY", "ShowBounty"); createToggle("KHOẢNG CÁCH", "Distance"); createToggle("MÁU", "Health")
-
--- =========================================================
--- ESP CORE (SIÊU NHẸ)
+-- ESP CORE (VỚI CƠ CHẾ FIX DATA SAU KHI LOAD)
 -- =========================================================
 local function applyESP(player)
     if player == localPlayer then return end
-    findDataPointers(player) -- Tìm đường dẫn 1 lần duy nhất
 
     local function setup(char)
-        local root = char:WaitForChild("HumanoidRootPart", 10)
-        local hum = char:WaitForChild("Humanoid", 10)
+        local root = char:WaitForChild("HumanoidRootPart", 15)
+        local hum = char:WaitForChild("Humanoid", 15)
         if not root or not hum then return end
 
         local bgui = Instance.new("BillboardGui", root)
         bgui.Name = "GeminiTag"; bgui.AlwaysOnTop = true; bgui.Size = UDim2.new(0, 200, 0, 60)
-        bgui.SizeOffset = Vector2.new(0, 0.7) -- Né Haki chuẩn
+        bgui.SizeOffset = Vector2.new(0, 0.8) -- Của bạn đây
         bgui.ExtentsOffset = Vector3.new(0, 2.2, 0)
 
         local txt = Instance.new("TextLabel", bgui)
@@ -115,19 +84,28 @@ local function applyESP(player)
         local hpBG = Instance.new("Frame", bgui); hpBG.Size = UDim2.new(0.4, 0, 0, 2); hpBG.Position = UDim2.new(0.3, 0, 0.95, 0); hpBG.BackgroundColor3 = Color3.new(0, 0, 0); hpBG.BorderSizePixel = 0; hpBG.Parent = bgui
         local hpFill = Instance.new("Frame", hpBG); hpFill.Size = UDim2.new(1, 0, 1, 0); hpFill.BorderSizePixel = 0; hpFill.Parent = hpBG
 
+        local lastRetry = tick()
+        local foundFullData = findDataPointers(player)
+
         task.spawn(function()
             while char and char.Parent and root and root.Parent do
                 if ESP_Settings.Enabled and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
                     local dist = (root.Position - localPlayer.Character.HumanoidRootPart.Position).Magnitude
-                    if dist < 50000 then
+                    
+                    -- KHOẢNG CÁCH NHÌN XA (Tự chỉnh 5000 ở đây nhé)
+                    if dist < 50000 then 
                         bgui.Enabled = true
-                        local ptr = playerPointers[player]
                         
-                        -- Đọc dữ liệu trực tiếp (Không quét lại - Cực nhẹ)
+                        -- CƠ CHẾ RETRY: Nếu chưa có data, cứ mỗi 5s quét lại 1 lần
+                        if not foundFullData and (tick() - lastRetry > 5) then
+                            foundFullData = findDataPointers(player)
+                            lastRetry = tick()
+                        end
+
+                        local ptr = playerPointers[player]
                         local lvl = (ptr and ptr.lvObj) and ptr.lvObj.Value or "???"
                         local pvpVal = (ptr and ptr.pvpObj) and ptr.pvpObj.Value or nil
-                        local pvpStatus = "Off"
-                        if pvpVal == true or pvpVal == 1 or tostring(pvpVal):lower() == "on" then pvpStatus = "On" end
+                        local pvpStatus = (pvpVal == true or pvpVal == 1 or tostring(pvpVal):lower() == "on") and "On" or "Off"
 
                         local content = ""
                         if ESP_Settings.Names then content = player.DisplayName end
@@ -148,8 +126,7 @@ local function applyESP(player)
                         if ESP_Settings.Health then
                             hpBG.Visible = true
                             local hpPct = math.clamp(hum.Health / hum.MaxHealth, 0, 1)
-                            hpFill.Size = UDim2.new(hpPct, 0, 1, 0)
-                            hpFill.BackgroundColor3 = Color3.fromHSV(hpPct * 0.3, 1, 1)
+                            hpFill.Size = UDim2.new(hpPct, 0, 1, 0); hpFill.BackgroundColor3 = Color3.fromHSV(hpPct * 0.3, 1, 1)
                         else hpBG.Visible = false end
                     else bgui.Enabled = false end
                 else bgui.Enabled = false end
@@ -161,6 +138,25 @@ local function applyESP(player)
     player.CharacterAdded:Connect(setup)
     if player.Character then setup(player.Character) end
 end
+
+-- Giao diện UI (Giữ nguyên menu cũ)
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "GeminiESP_V7_Final"; screenGui.Parent = CoreGui; screenGui.ResetOnSpawn = false
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 200, 0, 280); mainFrame.Position = UDim2.new(0.5, -100, 0.3, 0); mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15); mainFrame.Active = true; mainFrame.Visible = false; mainFrame.Parent = screenGui
+Instance.new("UICorner", mainFrame)
+local openBtn = Instance.new("TextButton")
+openBtn.Size = UDim2.new(0, 50, 0, 50); openBtn.Position = UDim2.new(0, 10, 0.5, 0); openBtn.Text = "ESP"; openBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 150); openBtn.Parent = screenGui; Instance.new("UICorner", openBtn).CornerRadius = UDim.new(1, 0)
+openBtn.MouseButton1Click:Connect(function() mainFrame.Visible = not mainFrame.Visible end)
+local container = Instance.new("ScrollingFrame")
+container.Size = UDim2.new(1, -10, 1, -50); container.Position = UDim2.new(0, 5, 0, 45); container.BackgroundTransparency = 1; container.CanvasSize = UDim2.new(0,0,0,250); container.ScrollBarThickness = 0; container.Parent = mainFrame
+Instance.new("UIListLayout", container).Padding = UDim.new(0, 5)
+local function createToggle(name, key)
+    local btn = Instance.new("TextButton", container)
+    btn.Size = UDim2.new(0.95, 0, 0, 30); btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40); btn.Text = name; btn.TextColor3 = Color3.new(1, 1, 1); btn.Font = Enum.Font.Gotham; btn.Parent = container; Instance.new("UICorner", btn)
+    btn.MouseButton1Click:Connect(function() ESP_Settings[key] = not ESP_Settings[key]; btn.BackgroundColor3 = ESP_Settings[key] and Color3.fromRGB(0, 100, 60) or Color3.fromRGB(40, 40, 40) end)
+end
+createToggle("HIỆN TÊN", "Names"); createToggle("LEVEL", "ShowLevel"); createToggle("PVP", "ShowPVP"); createToggle("BOUNTY", "ShowBounty"); createToggle("KHOẢNG CÁCH", "Distance"); createToggle("MÁU", "Health")
 
 for _, p in pairs(Players:GetPlayers()) do applyESP(p) end
 Players.PlayerAdded:Connect(applyESP)
