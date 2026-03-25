@@ -5,7 +5,7 @@
 ]]
 
 local InfiniteJumpEnabled = true
-local FlySpeed = 80 -- Tăng số này nếu muốn bay nhanh hơn nữa (Mặc định Roblox khoảng 50)
+local FlySpeed = 60 -- Tăng số này nếu muốn bay nhanh hơn nữa (Mặc định Roblox khoảng 50)
 
 game:GetService("UserInputService").JumpRequest:Connect(function()
     if InfiniteJumpEnabled then
