@@ -168,9 +168,9 @@ b17.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b18 = makeBtn(".")
+local b18 = makeBtn("Invisible")
 b18.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://gist.githubusercontent.com/Tincoi/40eb7bf351d0605738a9bb39fa404898/raw/80e25cda70aad2420ae06bff633cf3c47dca4aba/invisi%2520lucky"))()
 end)
 
 local b19 = makeBtn("Testscript")
