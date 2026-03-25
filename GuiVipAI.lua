@@ -138,9 +138,9 @@ b11.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/EspKing.lua"))()
 end)
 
-local b12 = makeBtn(".")
+local b12 = makeBtn("HeadHITBOX")
 b12.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://gist.githubusercontent.com/Tincoi/e8e12afeed7acd299cff081f9d75ea60/raw/931a4c88d0584fdbe68cd6629a8d4336aca45438/HEADHITBOXNGON"))()
 end)
 
 local b13 = makeBtn(".")
