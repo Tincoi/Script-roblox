@@ -163,9 +163,9 @@ b16.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet(""))()
 end)
 
-local b17 = makeBtn(".")
+local b17 = makeBtn("Chim")
 b17.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tincoi/Script-roblox/refs/heads/main/FlyChim"))()
 end)
 
 local b18 = makeBtn("Invisible")
