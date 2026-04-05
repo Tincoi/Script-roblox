@@ -148,9 +148,9 @@ b13.MouseButton1Click:Connect(function()
 loadstring(game:HttpGet("https://gist.githubusercontent.com/Tincoi/71f0a8b0477fff31b03cf6517a7461a0/raw/9a877c50ffa44802ddbe471ea04f82894bf499c7/lucky"))()
 end)
 
-local b14 = makeBtn(".")
+local b14 = makeBtn("click tp")
 b14.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(""))()
+loadstring(game:HttpGet("https://gist.githubusercontent.com/Tincoi/e3781753b799fd19c2fc42fbd75d2a01/raw/2303b1f684d20e876b84e6b5c97a646049673759/clicktp"))()
 end)
 
 local b15 = makeBtn(".")
